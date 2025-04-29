@@ -261,7 +261,7 @@ class DeviceResponseParser(
                         signatureAlgorithm
                     )
                     true
-                } catch (_: SignatureVerificationException) {
+                } catch (ex: SignatureVerificationException) {
                     false
                 }
                 builder.setDeviceSignedAuthenticatedViaSignature(true)
