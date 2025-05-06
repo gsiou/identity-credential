@@ -29,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,6 +68,18 @@ fun HomeScreen(
 
     // State to track which fields are enabled
     val fieldStates = remember { mutableStateListOf(*Array(fieldNames.size) { false }) }
+    val scanButtonEnabled by remember { derivedStateOf {
+        for (field in fieldStates) {
+            if (field) {
+                return@derivedStateOf true;
+            }
+        }
+        return@derivedStateOf false;
+    } };
+
+    LaunchedEffect(fieldStates) {
+
+    }
 
     Scaffold { innerPadding ->
         Box(modifier = modifier.padding(innerPadding)) {
@@ -167,7 +180,8 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(64.dp)
                         .size(width = 240.dp, height = 50.dp),
-                    onClick = { onRequestQRCodePreview(state) }
+                    onClick = { onRequestQRCodePreview(state) },
+                    enabled = scanButtonEnabled
                 ) {
                     Text(
                         text = "Scan QR Code",
